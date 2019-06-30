@@ -10,3 +10,9 @@ Useful scripts
 * `npm test`
 * `npm run build`
 * `npm run eject`
+
+## License
+
+workout is licensed under the MIT license.
+
+See [LICENSE](./LICENSE) for the full license text.
