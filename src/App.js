@@ -34,7 +34,11 @@ function Exercise({ name, sets, reps, tempo, rest, weights }) {
   return (
     <div>
       <p>
-          {name} - {sets} / {reps} / {tempo} / {rest}s / [{weights.join(", ")}]
+        <strong>{name}</strong>
+        <br />
+        <span>
+          {sets} / {reps} / {tempo} / {rest}s / [{weights.join(", ")}]
+        </span>
       </p>
     </div>
   );
