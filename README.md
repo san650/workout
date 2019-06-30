@@ -11,6 +11,10 @@ Useful scripts
 * `npm run build`
 * `npm run eject`
 
+## Deployment
+
+* `npm run deploy`
+
 ## License
 
 workout is licensed under the MIT license.
