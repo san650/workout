@@ -65,12 +65,10 @@ class Week extends Component {
       <div style={weekStyle}>
         <h3 onClick={this.handleClick}>
           {title}
-          {isVisible && <br />}
-          {isVisible &&
-            <span style={helpStyle}>
-              {days}
-            </span>
-          }
+          <br />
+          <span style={helpStyle}>
+            {days}
+          </span>
         </h3>
         {isVisible && exercises.map((exercise) =>
           <Exercise key={exercise.name} {...exercise} />)
