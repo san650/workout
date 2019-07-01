@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/workout/static/css/main.ad339bb5.chunk.css",
-    "main.js": "/workout/static/js/main.6bdc4230.chunk.js",
-    "main.js.map": "/workout/static/js/main.6bdc4230.chunk.js.map",
+    "main.js": "/workout/static/js/main.9f34980b.chunk.js",
+    "main.js.map": "/workout/static/js/main.9f34980b.chunk.js.map",
     "runtime~main.js": "/workout/static/js/runtime~main.787068e9.js",
     "runtime~main.js.map": "/workout/static/js/runtime~main.787068e9.js.map",
     "static/js/2.7e675ef3.chunk.js": "/workout/static/js/2.7e675ef3.chunk.js",
     "static/js/2.7e675ef3.chunk.js.map": "/workout/static/js/2.7e675ef3.chunk.js.map",
     "index.html": "/workout/index.html",
-    "precache-manifest.28bed72b7b8cb8761e38b82dea54ed06.js": "/workout/precache-manifest.28bed72b7b8cb8761e38b82dea54ed06.js",
+    "precache-manifest.58a0bd4215769ebc37dfa93b84c37dea.js": "/workout/precache-manifest.58a0bd4215769ebc37dfa93b84c37dea.js",
     "service-worker.js": "/workout/service-worker.js",
     "static/css/main.ad339bb5.chunk.css.map": "/workout/static/css/main.ad339bb5.chunk.css.map"
   }
