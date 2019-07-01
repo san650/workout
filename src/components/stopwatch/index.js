@@ -8,14 +8,15 @@ const style = {
   fontSize: '.8rem',
   position: 'fixed',
   top: '1em',
-  right: '.5em',
+  right: '1em',
   borderRadius: '50px',
-  backgroundColor: 'white'
+  backgroundColor: 'white',
+  boxShadow: '2px 2px rgba(0,0,0,.1)'
 };
 
 export default class StopWatch extends Component {
   state = {
-    seconds: 'Hit to start'
+    seconds: 'Go'
   }
 
   render() {
