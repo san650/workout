@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 
 const style = {
-  border: '1px solid silver',
+  border: '1px solid rgba(0,0,0,.1)',
   padding: '1em',
   textAlign: 'center',
-  fontFamily: 'monospace'
+  fontFamily: 'monospace',
+  fontSize: '.8rem',
+  position: 'fixed',
+  top: '1em',
+  right: '.5em',
+  borderRadius: '50px',
+  backgroundColor: 'white'
 };
 
 export default class StopWatch extends Component {

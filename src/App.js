@@ -14,33 +14,36 @@ function App() {
   );
 }
 
-const helpStyle = {
-  color: 'rgba(0,0,0,.5)',
-  fontSize: '.8rem',
-  fontWeight: 'normal'
-};
-
 function Training({ title, weeks }) {
   return (
     <div>
       <h2>
         {title}
       </h2>
-      <p style={helpStyle}>
-        Sets / Reps / Tempo / Rest
-      </p>
       {weeks.map((week) => <Week key={week.title} {...week} />)}
     </div>
   );
 }
 
+const weekStyle = {
+  borderTop: '1px dotted rgba(0,0,0,.1)',
+  margin: '1em 0'
+};
+
+const helpStyle = {
+  color: 'rgba(0,0,0,.5)',
+  fontSize: '.8rem',
+  fontWeight: 'normal',
+};
+
 function Week({ title, days, exercises }) {
   return (
-    <div>
+    <div style={weekStyle}>
       <h3>
         {title}
+        <br />
         <span style={helpStyle}>
-          {' '} - {days}
+          {days}
         </span>
       </h3>
       {exercises.map((exercise) => <Exercise key={exercise.name} {...exercise} />)}
@@ -48,16 +51,34 @@ function Week({ title, days, exercises }) {
   );
 }
 
+function LabelAndValue({ label, value }) {
+  return (
+    <span>
+      <span style={helpStyle}>
+        {label}
+      </span>
+      {' '}
+      <span>
+        {value}
+      </span>
+    </span>
+  );
+}
+
 function Exercise({ name, sets, reps, tempo, rest, weights }) {
   return (
     <div>
-      <p>
-        <strong>{name}</strong>
+      <h4>
+        {name}
         <br />
-        <span>
-          {sets} / {reps} / {tempo} / {rest}s
-        </span>
-      </p>
+        <LabelAndValue label="Sets" value={sets} />
+        {' '}
+        <LabelAndValue label="Reps" value={reps} />
+        {' '}
+        <LabelAndValue label="Tempo" value={tempo} />
+        {' '}
+        <LabelAndValue label="Rest" value={`${rest}s`} />
+      </h4>
       {weights.map((weight, index) =>
         <Set key={index} weight={weight} />
       )}
