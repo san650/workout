@@ -96,9 +96,14 @@ function LabelAndValue({ label, value }) {
   );
 }
 
+const exerciseStyle = {
+  borderLeft: '1px solid hotpink',
+  paddingLeft: '.5rem'
+}
+
 function Exercise({ name, sets, reps, tempo, rest, weights }) {
   return (
-    <div>
+    <div style={exerciseStyle}>
       <h4>
         {name}
         <br />

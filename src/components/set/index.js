@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 
-const style = {
+const uncheckedStyle = {
   display: 'inline-block',
   padding: '.5em',
   border: '1px solid rgba(0,0,0,.1)',
   textAlign: 'center',
-  margin: '0 .5em 0 0'
+  margin: '0 .5em 0 0',
+  borderRadius: '2rem',
+  fontFamily: 'monospace',
+  width: '25px',
+  backgroundColor: 'rgba(100,100,200,.01)'
 };
 
 const checkedStyle = {
+  ...uncheckedStyle,
   textDecoration: 'line-through',
-  opacity: '.5'
-};
+  opacity: '.2',
+  backgroundColor: 'rgba(0,0,0,.1)'
+}
 
 export default class Set extends Component {
   state = {
@@ -20,25 +26,12 @@ export default class Set extends Component {
 
   render() {
     const { checked } = this.state;
-    let weight;
-
-    if (checked) {
-      weight = (
-        <span style={checkedStyle}>
-          {this.props.weight}
-        </span>
-      );
-    } else {
-      weight = (
-        <span>
-          {this.props.weight}
-        </span>
-      );
-    }
+    const label = this.props.weight.toString().padStart(2, ' ');
+    const style = checked ? checkedStyle : uncheckedStyle;
 
     return (
       <div style={style} onClick={this.handleClick}>
-        {weight}
+        {label}
       </div>
     );
   }
