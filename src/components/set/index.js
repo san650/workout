@@ -20,14 +20,9 @@ const checkedStyle = {
 }
 
 export default class Set extends Component {
-  state = {
-    checked: false
-  }
-
   render() {
-    const { checked } = this.state;
     const label = this.props.weight.toString().padStart(2, ' ');
-    const style = checked ? checkedStyle : uncheckedStyle;
+    const style = this.props.isChecked ? checkedStyle : uncheckedStyle;
 
     return (
       <div style={style} onClick={this.handleClick}>
@@ -37,8 +32,6 @@ export default class Set extends Component {
   }
 
   handleClick = () => {
-    this.setState({
-      checked: !this.state.checked
-    });
+    this.props.onClick(this.props.id);
   }
 }

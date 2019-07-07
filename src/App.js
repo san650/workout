@@ -1,125 +1,62 @@
 import React, { Component } from 'react';
 import './App.css';
-import data from './data';
-import StopWatch from './components/stopwatch';
+import db from './data';
+
+import Chrome from './components/chrome';
+import Exercise from './components/exercise';
+import Routine from './components/routine';
 import Set from './components/set';
+import StopWatch from './components/stopwatch';
+import Workout from './components/workout';
 
-function App() {
-  return (
-    <div>
-      <h1>Workout</h1>
-      <StopWatch />
-      <Training {...data} />
-    </div>
-  );
-}
-
-class Training extends Component {
-  state = {
-    weeks: this.props.weeks.map((week) => ({
-      ...week,
-      isVisible: false
-    }))
-  }
+class App extends Component {
+  state = db.seed()
 
   render() {
+    const routines = this.state.routines;
+
     return (
-      <div>
-        <h2>
-          {this.props.title}
-        </h2>
-        {this.state.weeks.map((week) =>
-          <Week key={week.title} {...week} onVisibilityChange={this.handleVisibilityChange} />
+      <Chrome>
+        <StopWatch />
+
+        {routines.map((routine) =>
+          <Routine key={routine.id} title={routine.title}>
+            {routine.workouts.map((workout) =>
+              <Workout key={workout.id} id={workout.id} title={workout.title} days={workout.days} onClick={this.handleWorkoutClick}>
+                {workout.isVisible && workout.exercises.map((exercise) =>
+                  <Exercise key={exercise.name} name={exercise.name} sets={exercise.sets} reps={exercise.reps} tempo={exercise.tempo} rest={exercise.rest}>
+                    {exercise.weights.map((weight) =>
+                      <Set key={weight.id} id={weight.id} weight={weight.value} isChecked={weight.isDone} onClick={this.handleSetClick} />
+                    )}
+                  </Exercise>
+                )}
+              </Workout>
+            )}
+          </Routine>
         )}
-      </div>
+      </Chrome>
     );
   }
 
-  handleVisibilityChange = (target) => {
-    this.setState({
-      ...this.state,
-      weeks: this.state.weeks.map((week) =>
-        week.title !== target ?
-          week : { ...week, isVisible: !week.isVisible }
-      )
-    });
-  }
-}
-
-const weekStyle = {
-  borderTop: '1px dotted rgba(0,0,0,.1)',
-  margin: '1em 0'
-};
-
-const helpStyle = {
-  color: 'rgba(0,0,0,.5)',
-  fontSize: '.8rem',
-  fontWeight: 'normal',
-};
-
-class Week extends Component {
-  render() {
-    const { title, days, exercises, isVisible } = this.props;
-
-    return (
-      <div style={weekStyle}>
-        <h3 onClick={this.handleClick}>
-          {title}
-          <br />
-          <span style={helpStyle}>
-            {days}
-          </span>
-        </h3>
-        {isVisible && exercises.map((exercise) =>
-          <Exercise key={exercise.name} {...exercise} />)
-        }
-      </div>
+  handleWorkoutClick = (workoutId) => {
+    this.setState(
+      db.updateWorkoutById(this.state, workoutId, toggleFlag('isVisible'))
     );
   }
 
-  handleClick = () => {
-    this.props.onVisibilityChange(this.props.title);
+  handleSetClick = (setId) => {
+    this.setState(
+      db.updateSetById(this.state, setId, toggleFlag('isDone'))
+    );
   }
 }
 
-function LabelAndValue({ label, value }) {
-  return (
-    <span>
-      <span style={helpStyle}>
-        {label}
-      </span>
-      {' '}
-      <span>
-        {value}
-      </span>
-    </span>
-  );
-}
+function toggleFlag(flag) {
+  return (object) => {
+    object[flag] = !object[flag];
 
-const exerciseStyle = {
-  borderLeft: '1px solid hotpink',
-  paddingLeft: '.5rem'
-}
-
-function Exercise({ name, sets, reps, tempo, rest, weights }) {
-  return (
-    <div style={exerciseStyle}>
-      <h4>
-        {name}
-        <br />
-        <LabelAndValue label="Sets" value={sets} />
-        {' '}
-        <LabelAndValue label="Reps" value={reps} />
-        {' '}
-        <LabelAndValue label="Tempo" value={tempo} />
-        {' '}
-        <LabelAndValue label="Rest" value={`${rest}s`} />
-      </h4>
-      {weights.map((weight, index) =>
-        <Set key={index} weight={weight} />
-      )}
-    </div>
-  );
+    return object;
+  };
 }
 
 export default App;
