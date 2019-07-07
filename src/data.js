@@ -1,20 +1,19 @@
-let uniqueWeightId = 0;
+let uniqueSetId = 0;
 
-function weight(value) {
+function set(value) {
   return {
     value,
-    id: ++uniqueWeightId
+    id: ++uniqueSetId
   };
 }
 
-function exercise(name, sets, reps, tempo, rest, weights) {
+function exercise(name, reps, tempo, rest, sets) {
   return {
     name,
-    sets,
+    sets: sets.map(set),
     reps,
     tempo,
     rest,
-    weights: weights.map(weight)
   };
 }
 
@@ -27,11 +26,11 @@ const fourWeekRoutine = {
       title: "Week 1: Chest And Triceps",
       days: "Saturday / Monday / Wednesday / Friday",
       exercises: [
-        exercise("Bench press", 5, '10', '2010', 60, [10,11,11,11,11]),
-        exercise("Triceps dips", 5, '6-10', '2110', 60, [6,8,8,8,8]),
-        exercise("Incline dumbbell press", 3, '12-15', '2010', 60, [7.5, 7.5, 10]),
-        exercise("Incline dumbbell fly", 3, '12-15', '2010', 60, [7.5, 7.5, 7.5]),
-        exercise("Triceps extension", 3, '12-15', '2010', 60, [7.5, 10, 10]),
+        exercise("Bench press", '10', '2010', 60, [10,11,11,11,11]),
+        exercise("Triceps dips", '6-10', '2110', 60, [6,8,8,8,8]),
+        exercise("Incline dumbbell press", '12-15', '2010', 60, [7.5, 7.5, 10]),
+        exercise("Incline dumbbell fly", '12-15', '2010', 60, [7.5, 7.5, 7.5]),
+        exercise("Triceps extension", '12-15', '2010', 60, [7.5, 10, 10]),
       ]
     },
     {
@@ -39,11 +38,11 @@ const fourWeekRoutine = {
       title: "Week 2: Back And Biceps",
       days: "Sunday / Tuesday / Thursday / Saturday",
       exercises: [
-        exercise("Pull up", 5, '6-10', '2011', 60, [10,10,10,10,10]),
-        exercise("Bent-over row", 5, '10', '2010', 60, ['?','?','?','?','?']),
-        exercise("Chin-up", 3, '6-10', '2011', 60, ['?', '?', '?']),
-        exercise("Standing biceps curl", 3, '12-15', '2011', 60, ['?', '?', '?']),
-        exercise("Seated incline curl", 3, '12-15', '2011', 60, ['?', '?', '?']),
+        exercise("Pull up", '6-10', '2011', 60, [10,10,10,10,10]),
+        exercise("Bent-over row", '10', '2010', 60, ['?','?','?','?','?']),
+        exercise("Chin-up", '6-10', '2011', 60, ['?', '?', '?']),
+        exercise("Standing biceps curl", '12-15', '2011', 60, ['?', '?', '?']),
+        exercise("Seated incline curl", '12-15', '2011', 60, ['?', '?', '?']),
       ]
     }
   ]
@@ -68,7 +67,7 @@ function findSetById(sets, setId) {
 }
 
 function findExerciseBySetId(exercises, setId) {
-  return exercises.find((e) => findSetById(e.weights, setId));
+  return exercises.find((e) => findSetById(e.sets, setId));
 }
 
 function findWorkoutBySetId(workouts, setId) {
@@ -77,6 +76,16 @@ function findWorkoutBySetId(workouts, setId) {
 
 function findRoutineBySetId(routines, setId) {
   return routines.find((r) => findWorkoutBySetId(r.workouts, setId));
+}
+
+function updateCollection(state, prop, target, updater) {
+  return {
+    ...state,
+    [prop]: state[prop].map((o) =>
+      o !== target ?
+      o : updater({...o})
+    )
+  };
 }
 
 export default {
@@ -88,48 +97,23 @@ export default {
     const routine = findRoutineByWorkoutId(state.routines, workoutId);
     const workout = findWorkoutById(routine.workouts, workoutId);
 
-    return {
-      ...state,
-      routines: state.routines.map((r) =>
-        r !== routine ?
-        r : { ...r,
-          workouts : r.workouts.map((w) =>
-            w !== workout ?
-            w : updater({ ...w })
-          )
-        }
-      )
-    };
+    return updateCollection(state, 'routines', routine, (r) =>
+      updateCollection(r, 'workouts', workout, updater)
+    );
   },
 
   updateSetById(state, setId, updater) {
     const routine = findRoutineBySetId(state.routines, setId);
     const workout = findWorkoutBySetId(routine.workouts, setId);
     const exercise = findExerciseBySetId(workout.exercises, setId);
-    const set = findSetById(exercise.weights, setId);
+    const set = findSetById(exercise.sets, setId);
 
-    return {
-      ...state,
-      routines: state.routines.map((r) =>
-        r !== routine ?
-        r : { ...r,
-          workouts : r.workouts.map((w) =>
-            w !== workout ?
-            w : { ...w,
-              exercises: w.exercises.map((e) =>
-                e !== exercise ?
-                e: {
-                  ...e,
-                  weights: e.weights.map((s) =>
-                    s !== set ?
-                    s : updater({ ...s})
-                  )
-                }
-              )
-            }
-          )
-        }
+    return updateCollection(state, 'routines', routine, (r) =>
+      updateCollection(r, 'workouts', workout, (w) =>
+        updateCollection(w, 'exercises', exercise, (e) =>
+          updateCollection(e, 'sets', set, updater)
+        )
       )
-    };
+    )
   }
 };

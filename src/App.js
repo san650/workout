@@ -24,9 +24,9 @@ class App extends Component {
             {routine.workouts.map((workout) =>
               <Workout key={workout.id} id={workout.id} title={workout.title} days={workout.days} onClick={this.handleWorkoutClick}>
                 {workout.isVisible && workout.exercises.map((exercise) =>
-                  <Exercise key={exercise.name} name={exercise.name} sets={exercise.sets} reps={exercise.reps} tempo={exercise.tempo} rest={exercise.rest}>
-                    {exercise.weights.map((weight) =>
-                      <Set key={weight.id} id={weight.id} weight={weight.value} isChecked={weight.isDone} onClick={this.handleSetClick} />
+                  <Exercise key={exercise.name} name={exercise.name} sets={exercise.sets.length} reps={exercise.reps} tempo={exercise.tempo} rest={exercise.rest}>
+                    {exercise.sets.map((set) =>
+                      <Set key={set.id} id={set.id} weight={set.value} isChecked={set.isDone} onClick={this.handleSetClick} />
                     )}
                   </Exercise>
                 )}
