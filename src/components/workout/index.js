@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { helpStyle } from '../../styles';
 
 const style = {
@@ -6,7 +6,7 @@ const style = {
   margin: '1em 0'
 };
 
-export default class Workout extends Component {
+export default class Workout extends PureComponent {
   render() {
     const { title, days, children } = this.props;
 

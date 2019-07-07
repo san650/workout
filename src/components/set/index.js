@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 const uncheckedStyle = {
   display: 'inline-block',
@@ -19,7 +19,7 @@ const checkedStyle = {
   backgroundColor: 'rgba(0,0,0,.1)'
 }
 
-export default class Set extends Component {
+export default class Set extends PureComponent {
   render() {
     const label = this.props.weight.toString().padStart(2, ' ');
     const style = this.props.isChecked ? checkedStyle : uncheckedStyle;

@@ -9,6 +9,32 @@ import Set from './components/set';
 import StopWatch from './components/stopwatch';
 import Workout from './components/workout';
 
+const flexStyle = {
+  display: 'flex'
+};
+
+function Flex({children}) {
+  return (
+    <div style={flexStyle}>
+      {children}
+    </div>
+  );
+}
+
+function Picture({image, alt}) {
+  const style = {
+    width: '100px',
+    height: '100px',
+    backgroundImage: `url("${image}")`,
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat'
+  };
+
+  return (
+    <div style={style} />
+  );
+}
+
 class App extends Component {
   state = db.seed()
 
@@ -19,14 +45,20 @@ class App extends Component {
       <Chrome>
         <StopWatch />
 
-        {routines.map((routine) =>
-          <Routine key={routine.id} title={routine.title}>
-            {routine.workouts.map((workout) =>
-              <Workout key={workout.id} id={workout.id} title={workout.title} days={workout.days} onClick={this.handleWorkoutClick}>
-                {workout.isVisible && workout.exercises.map((exercise) =>
-                  <Exercise key={exercise.name} name={exercise.name} sets={exercise.sets.length} reps={exercise.reps} tempo={exercise.tempo} rest={exercise.rest}>
-                    {exercise.sets.map((set) =>
-                      <Set key={set.id} id={set.id} weight={set.value} isChecked={set.isDone} onClick={this.handleSetClick} />
+        {routines.map(({id, title, workouts}) =>
+          <Routine key={id} title={title}>
+            {workouts.map(({id, title, days, isVisible, exercises}) =>
+              <Workout key={id} id={id} title={title} days={days} onClick={this.handleWorkoutClick}>
+                {isVisible && exercises.map(({id, name, sets, reps, tempo, rest, images}) =>
+                  <Exercise key={id} name={name} sets={sets.length} reps={reps} tempo={tempo} rest={rest}>
+                    <Flex>
+                      {images && images.map((i) =>
+                        <Picture key={i} image={i} alt="???" />
+                      )}
+                    </Flex>
+
+                    {sets.map(({id, value, isDone}) =>
+                      <Set key={id} id={id} weight={value} isChecked={isDone} onClick={this.handleSetClick} />
                     )}
                   </Exercise>
                 )}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 const style = {
   border: '1px solid rgba(0,0,0,.1)',
@@ -14,7 +14,7 @@ const style = {
   boxShadow: '2px 2px rgba(0,0,0,.1)'
 };
 
-export default class StopWatch extends Component {
+export default class StopWatch extends PureComponent {
   state = {
     seconds: 'Go'
   }
